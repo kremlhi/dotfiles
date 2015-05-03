@@ -1,0 +1,8 @@
+%% -*- mode: erlang -*-
+
+case string:tokens(atom_to_list(node()), "@") of
+    ["emacs" | _] ->
+        code:add_pathsa([os:getenv("HOMESW") ++ "/share/distel/ebin"]);
+    _ ->
+        ok
+end.

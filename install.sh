@@ -7,8 +7,12 @@ wd=$(dirname "$0")
 
 cd "$wd"
 dotfiles=${PWD#$HOME/}
+case "$dotfiles" in /*)
+    echo "error: $PWD not under $HOME" >&2
+    exit 1 ;;
+esac
 for i in dot.*; do
-    dst=../${i#dot}
+    dst=$HOME/${i#dot}
     if [ -d "$i" ]; then
         mkdir -p "$dst"
         for j in "$i"/*; do
