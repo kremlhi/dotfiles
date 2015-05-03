@@ -1,0 +1,13 @@
+URxvt.scrollBar: false
+URxvt.urgentOnBell: true
+URxvt.reverseVideo: true
+URxvt.scrollTtyOutput: false
+URxvt.scrollWithBuffer: false
+
+emacs.background: black
+emacs.foreground: #eeeeee
+emacs.menuBar: false
+emacs.toolBar: false
+emacs.verticalScrollBars: false
+
+*font: -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*
