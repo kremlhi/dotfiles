@@ -134,7 +134,7 @@
       ;;设置忽略的响应类型
       rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
       rcirc-log-flag t)
-(if (eq (getenv "USER") "emil")
+(if (string= (getenv "USER") "emil")
   (setq rcirc-default-nick "emilh"
         rcirc-server-alist
         '(("irc.inet.tele.dk"
