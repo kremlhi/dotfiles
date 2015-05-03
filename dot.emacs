@@ -1,6 +1,6 @@
 ;;(setq debug-on-error nil)
 
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 
 ;; from #emacs on freenode
@@ -158,6 +158,8 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
+
+;; (mapcar 'package-install '(emms magit w3m))
 
 (require 'emms-setup)
 (emms-all)
