@@ -28,13 +28,16 @@
 
 
 ;;;; pimpin my EMACS
-
-(pcase window-system
-  (`ns (set-background-color "black")
-       (set-foreground-color "#eeeeee")
-       (menu-bar-mode 1)
-       (set-frame-font "Menlo 14"))
-  (`x (global-set-key (kbd "C-z") nil)))
+(when (string= system-type "darwin")
+  (menu-bar-mode 1)
+  (add-to-list 'default-frame-alist '(background-color . "black"))
+  (add-to-list 'default-frame-alist '(foreground-color . "#eeeeee"))
+  (add-to-list 'default-frame-alist '(font . "Menlo 14"))
+  (add-to-list 'default-frame-alist '(height . 44))
+  (setq mac-option-key-is-meta nil
+        mac-command-key-is-meta t
+        mac-command-modifier 'meta
+        mac-option-modifier nil))
 
 (setq display-time-24hr-format t)
 (display-time-mode 1)
@@ -49,22 +52,24 @@
       inhibit-startup-screen 1
       initial-scratch-message "")
 
-(setq browse-url-generic-program (executable-find "sensible-browser")
-      browse-url-browser-function 'browse-url-generic)
-
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
 
 (set-face-attribute 'region nil :background "#4d4d4d")
 
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-log-done 'time)
+
+(global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
+(global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
+(global-set-key (kbd "C-c L") 'org-insert-link-global)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
-(global-set-key (kbd "C-c L") 'org-insert-link-global)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c o") 'org-open-at-point-global)
-
-(setq org-log-done 'time)
+(global-set-key (kbd "M-g b") 'magit-blame-mode)
+(global-set-key (kbd "M-g o") 'magit-show)
+(global-set-key (kbd "M-g s") 'magit-status)
 
 
 ;;;; lang
@@ -168,8 +173,6 @@
 (setq emms-source-file-default-directory "/skagul/music/skuld")
 (require 'emms-history)
 (emms-history-load)
-(global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
-(global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
 
 (require 'magit)
 (setq magit-last-seen-setup-instructions "1.4.0")

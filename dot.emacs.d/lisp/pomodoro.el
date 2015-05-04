@@ -125,7 +125,8 @@ Formatted with `format-seconds'."
   (setq pomodoro-end-time (time-add (current-time) (list 0 (* minutes 60) 0))))
 
 (defun pomodoro-tick ()
-  (let ((time (round (float-time (time-subtract pomodoro-end-time (current-time))))))
+  (let ((time
+         (round (float-time (time-subtract pomodoro-end-time (current-time))))))
     (if (<= time 0)
         (if (string= pomodoro-current-cycle pomodoro-work-cycle)
             (progn
@@ -176,13 +177,15 @@ Formatted with `format-seconds'."
 (defun pomodoro-pause ()
   (interactive)
   (cancel-timer pomodoro-timer)
-  (setq pomodoro-time-remaining (round (float-time (time-subtract pomodoro-end-time (current-time)))))
+  (setq pomodoro-time-remaining
+        (round (float-time (time-subtract pomodoro-end-time (current-time)))))
   (force-mode-line-update))
 
 (defun pomodoro-resume ()
   (interactive)
-  (setq pomodoro-end-time (time-add (current-time) (seconds-to-time pomodoro-time-remaining)))
-  (setq pomodoro-timer (run-with-timer 0 1 'pomodoro-tick))) 
+  (setq pomodoro-end-time
+        (time-add (current-time) (seconds-to-time pomodoro-time-remaining)))
+  (setq pomodoro-timer (run-with-timer 0 1 'pomodoro-tick)))
 
 (defun pomodoro-stop ()
   (interactive)
@@ -206,9 +209,8 @@ Formatted with `format-seconds'."
   (play-pomodoro-sound pomodoro-work-start-sound))
 
 (defun pomodoro-add-to-mode-line ()
-  (setq-default mode-line-format
-                (cons '(pomodoro-mode-line-string pomodoro-mode-line-string)
-                      mode-line-format)))
+  (add-to-list 'mode-line-format
+               '(pomodoro-mode-line-string pomodoro-mode-line-string))
+  (setq-default mode-line-format mode-line-format))
 
 (provide 'pomodoro)
-;;; pomodoro.el ends here
