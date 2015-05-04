@@ -34,13 +34,7 @@ esac
 LESS=-FemXLs
 export PAGER LESS
 
-PS1='\h\$ '
-case "$TERM" in
-    xterm*|rxvt*)
-        PS1="\[\033]0;\$(echo \"\$PWD\" | sed 's:^/\$::')/-\h\007\]$PS1" ;;
-    *) ;;
-esac
-export PS1
+PS1='\h\$ '; export PS1
 
 alias ls='ls -F'
 
