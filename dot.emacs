@@ -1,7 +1,15 @@
+;; -*- mode: emacs-lisp -*-
+
 ;;(setq debug-on-error nil)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
+(add-to-list 'load-path (concat "BREW" "/share/emacs/site-lisp/mu4e"))
+
+;; put your private parts in ~/.emacs.d/lisp/priv-${USER}.el
+(load (concat "priv-" (getenv "USER")))
+
+
+;;;; pimpin my EMACS
 
 ;; from #emacs on freenode
 (defun better-defaults ()
@@ -26,8 +34,6 @@
         apropos-do-all t))
 (better-defaults)
 
-
-;;;; pimpin my EMACS
 (when (string= system-type "darwin")
   (menu-bar-mode 1)
   (add-to-list 'default-frame-alist '(background-color . "black"))
@@ -43,7 +49,7 @@
 (display-time-mode 1)
 
 ;; disable colour crap
-(if (not (assoc 'tty-color-mode default-frame-alist))
+(unless (assoc 'tty-color-mode default-frame-alist)
     (push (cons 'tty-color-mode 'never) default-frame-alist))
 (global-font-lock-mode -1)
 
@@ -80,11 +86,13 @@
   (or (getenv "OTP_ROOT")
       (shell-command-to-string
        "erl -noinput -eval 'io:format(os:getenv(\"ROOTDIR\")),halt().'")))
+
 (defun cond-load-distel (dir)
   (when (file-exists-p dir)
     (add-to-list 'load-path dir)
     (require 'distel)
     (distel-setup)))
+
 (defun set-erlang-dir (dir)
   (let ((bin-dir (expand-file-name "bin" dir))
         (tools-dirs (file-expand-wildcards
@@ -95,10 +103,13 @@
       (setq erlang-root-dir dir)
       (require 'erlang-start)
       (cond-load-distel (concat (getenv "HOMESW") "/share/distel/elisp")))))
-(set-erlang-dir (erl-root))
+
 (defun my-erlang-mode-hook ()
   (setq inferior-erlang-machine-options '("-sname" "emacs")))
+
 (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
+
+(set-erlang-dir (erl-root))
 
 (c-add-style "openbsd"
              '("bsd"
@@ -114,10 +125,11 @@
 (setq c-default-style "openbsd")
 
 (defun my-python-mode-hook ()
-  (setq tabs-width 4)
-  (setq indent-tabs-mode t))
+  (setq indent-tabs-mode t
+        tab-width 4
+        python-indent 8))
+
 (add-hook 'python-mode-hook 'my-python-mode-hook)
-(add-hook 'c++-mode-hook 'my-python-mode-hook)
 
 (defun my-sh-mode-hook ()
   (setq sh-indentation 4
@@ -133,48 +145,79 @@
 ;;;; propaganda
 
 (add-hook 'rcirc-mode-hook '(lambda () (rcirc-omit-mode))) ;默认打开忽略模式
+
 (rcirc-track-minor-mode 1)
+
 (setq rcirc-buffer-maximum-lines 1024
       rcirc-scroll-show-maximum-output nil
       ;;设置忽略的响应类型
       rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
       rcirc-log-flag t)
-(if (string= (getenv "USER") "emil")
-  (setq rcirc-default-nick "emilh"
-        rcirc-server-alist
-        '(("irc.inet.tele.dk"
-           :channels ("#dv" "#update"))
-          ("irc.freenode.org"
-           :channels ("#iccarus" "#erlang" "#emacs" "#bhyve" "#plan9" "#9front")))))
+
+(require 'epg-config)
+
+(setq mml2015-use 'epg
+      mml2015-verbose t
+      mml2015-encrypt-to-self t
+      mml2015-cache-passphrase t
+      mml2015-passphrase-cache-expiry '36000
+      epg-debug t)
 
 (require 'pomodoro)
+
 (setq sounds '("/System/Library/Sounds/Glass.aiff"
                "/usr/share/sounds/ubuntu/stereo/phone-outgoing-busy.ogg"))
+
 (setq sound (car (remove-if-not 'file-readable-p sounds)))
-(if (not (executable-find pomodoro-sound-player))
+
+(unless (executable-find pomodoro-sound-player)
   (setq pomodoro-sound-player "afplay"))
+
 (setq pomodoro-break-start-sound sound
       pomodoro-work-start-sound sound
       pomodoro-time-format "%m"
       pomodoro-show-number t)
+
 (pomodoro-add-to-mode-line)
 
 (require 'package)
+
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
+
 (package-initialize)
 
 ;; (mapcar 'package-install '(emms magit w3m))
 
 (require 'emms-setup)
+(require 'emms-player-mplayer)
+(require 'emms-history)
+
 (emms-all)
 (emms-default-players)
-(require 'emms-player-mplayer)
-(setq emms-source-file-default-directory "/skagul/music/skuld")
-(require 'emms-history)
 (emms-history-load)
 
 (require 'magit)
+
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 (require 'w3m)
+
+(require 'mu4e)
+(require 'mu4e-contrib)
+(require 'org-mu4e)
+
+(setq shr-inhibit-decoration t
+      mu4e-view-prefer-html t ;people...
+      mu4e-html2text-command 'mu4e-shr2text
+      mu4e-get-mail-command "offlineimap"
+      mu4e-update-interval (* 5 60)
+      mu4e-headers-date-format "%F %T"
+      mail-user-agent 'mu4e-user-agent
+      mu4e-org-contacts-file  "~/org/contacts.org")
+
+(add-to-list 'mu4e-headers-actions
+             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+
+(add-to-list 'mu4e-view-actions
+             '("org-contact-add" ?o mu4e-action-add-org-contact) t)

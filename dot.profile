@@ -4,7 +4,7 @@ SYS=$(uname -s | tr '[:upper:]' '[:lower:]'); export SYS
 ARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/x86_64/amd64/'); export ARCH
 HOMESW=$HOME/sw/$SYS-$ARCH; export HOMESW
 
-BREW=/brew; export BREW
+BREW=/brew; [ -d "$BREW" ] || BREW=/usr/local; export BREW
 CABALBIN=$(sed -n 's/^extra-prog-path: //p' ~/.cabal/config 2>/dev/null)
 GOROOT=/usr/local/go; export GOROOT
 PLAN9=/p9p; export PLAN9
@@ -37,4 +37,4 @@ export PAGER LESS
 PS1='\h\$ '; export PS1
 
 alias ls='ls -F'
-
+alias e=$EDITOR
