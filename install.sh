@@ -16,9 +16,9 @@ for i in dot.*; do
     if [ -d "$i" ]; then
         mkdir -p "$dst"
         for j in "$i"/*; do
-            ln -fs "../$dotfiles/$j" "$dst"
+            ln -sfv "../$dotfiles/$j" "$dst"
         done
         continue
     fi
-    ln -fs "$dotfiles/$i" "$dst"
+    ln -sfv "$dotfiles/$i" "$dst"
 done
