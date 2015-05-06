@@ -1,12 +1,12 @@
 ;; -*- mode: emacs-lisp -*-
 
-;;(setq debug-on-error nil)
-
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'load-path (concat "BREW" "/share/emacs/site-lisp/mu4e"))
 
 ;; put your private parts in ~/.emacs.d/lisp/priv-${USER}.el
-(load (concat "priv-" (getenv "USER")))
+(let ((lib (concat "priv-" (getenv "USER"))))
+  (when (locate-library lib)
+    (load lib)))
 
 
 ;;;; pimpin my EMACS
@@ -34,12 +34,13 @@
         apropos-do-all t))
 (better-defaults)
 
-(when (string= system-type "darwin")
+(when (eq system-type 'darwin)
   (menu-bar-mode 1)
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "#eeeeee"))
-  (add-to-list 'default-frame-alist '(font . "Menlo 14"))
-  (add-to-list 'default-frame-alist '(height . 44))
+  (add-to-list 'default-frame-alist '(font . "Menlo 13"))
+  (add-to-list 'default-frame-alist '(height . 48))
+  (set-face-attribute 'region nil :background "#4d4d4d")
   (setq mac-option-key-is-meta nil
         mac-command-key-is-meta t
         mac-command-modifier 'meta
@@ -60,8 +61,6 @@
 
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
-
-(set-face-attribute 'region nil :background "#4d4d4d")
 
 (setq org-log-done 'time)
 
@@ -190,12 +189,9 @@
 ;; (mapcar 'package-install '(emms magit w3m))
 
 (require 'emms-setup)
-(require 'emms-player-mplayer)
-(require 'emms-history)
 
 (emms-all)
 (emms-default-players)
-(emms-history-load)
 
 (require 'magit)
 
@@ -204,12 +200,14 @@
 (require 'w3m)
 
 (require 'mu4e)
-(require 'mu4e-contrib)
+(when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
+  (require 'mu4e-contrib)
+  (setq mu4e-html2text-command 'mu4e-shr2text))
+
 (require 'org-mu4e)
 
 (setq shr-inhibit-decoration t
       mu4e-view-prefer-html t ;people...
-      mu4e-html2text-command 'mu4e-shr2text
       mu4e-get-mail-command "offlineimap"
       mu4e-update-interval (* 5 60)
       mu4e-headers-date-format "%F %T"

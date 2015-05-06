@@ -3,12 +3,11 @@ URxvt.urgentOnBell: true
 URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: false
 
-emacs.background: black
-emacs.foreground: #eeeeee
 emacs.menuBar: false
 emacs.toolBar: false
 emacs.verticalScrollBars: false
 emacs.geometry: 80x48
+emacs.region.attributeBackground: #4d4d4d
 
 *font: -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*
 *reverseVideo: true
