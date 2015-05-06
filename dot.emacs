@@ -1,7 +1,6 @@
 ;; -*- mode: emacs-lisp -*-
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(add-to-list 'load-path (concat "BREW" "/share/emacs/site-lisp/mu4e"))
 
 ;; put your private parts in ~/.emacs.d/lisp/priv-${USER}.el
 (let ((lib (concat "priv-" (getenv "USER"))))
@@ -45,6 +44,12 @@
         mac-command-key-is-meta t
         mac-command-modifier 'meta
         mac-option-modifier nil))
+
+(setq backup-by-copying t
+      backup-directory-alist '(("." . "~/.emacs.d/trash"))
+      delete-old-versions t
+      kept-new-versions 6
+      version-control t)
 
 (setq display-time-24hr-format t)
 (display-time-mode 1)
