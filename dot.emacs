@@ -38,7 +38,7 @@
   (add-to-list 'default-frame-alist '(background-color . "black"))
   (add-to-list 'default-frame-alist '(foreground-color . "#eeeeee"))
   (add-to-list 'default-frame-alist '(font . "Menlo 13"))
-  (add-to-list 'default-frame-alist '(height . 48))
+  (add-to-list 'default-frame-alist '(height . 47))
   (set-face-attribute 'region nil :background "#4d4d4d")
   (setq mac-option-key-is-meta nil
         mac-command-key-is-meta t
@@ -131,7 +131,7 @@
 (defun my-python-mode-hook ()
   (setq indent-tabs-mode t
         tab-width 4
-        python-indent 8))
+        python-indent 4))
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
@@ -139,6 +139,7 @@
   (setq sh-indentation 4
         sh-basic-offset 4
         indent-tabs-mode nil))
+
 (add-hook 'sh-mode-hook 'my-sh-mode-hook)
 
 ;; cperl-mode is preferred to perl-mode
@@ -217,7 +218,11 @@
       mu4e-update-interval (* 5 60)
       mu4e-headers-date-format "%F %T"
       mail-user-agent 'mu4e-user-agent
-      mu4e-org-contacts-file  "~/org/contacts.org")
+      mu4e-compose-signature ""
+      message-signature nil
+      mu4e-org-contacts-file  "~/org/contacts.org"
+      smtpmail-stream-type 'ssl
+      send-mail-function 'smtpmail-send-it)
 
 (add-to-list 'mu4e-headers-actions
              '("org-contact-add" ?o mu4e-action-add-org-contact) t)

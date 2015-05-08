@@ -13,11 +13,12 @@ localfolders = ~/Maildir
 [Repository rdek]
 type = IMAP
 ssl = yes
-cert_fingerprint=f6a98bbc7e8f7e47b5132fa6815dc3a01ea8f6bf
+sslcacertfile = /brew/etc/openssl/cert.pem
+#cert_fingerprint=f6a98bbc7e8f7e47b5132fa6815dc3a01ea8f6bf
 remoteuser = emil.holmstrom
 remotehost = mail.dektech.com.au
 remoteport = 993
-remotepasseval = get_password_emacs("mail.dektech.com.au", "emil.holmstrom", "993")
+remotepasseval = keyring_get_password("imaps://mail.dektech.com.au", "emil.holmstrom")
 maxconnections = 3
 holdconnectionopen = true
 keepalive = 60
