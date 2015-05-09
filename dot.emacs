@@ -67,7 +67,8 @@
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
 
-(setq org-log-done 'time)
+(setq org-log-done 'time
+      default-input-method "swedish-postfix") ;C-\
 
 (global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
 (global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
