@@ -51,9 +51,6 @@
       kept-new-versions 6
       version-control t)
 
-(setq display-time-24hr-format t)
-(display-time-mode 1)
-
 ;; disable colour crap
 (unless (assoc 'tty-color-mode default-frame-alist)
     (push (cons 'tty-color-mode 'never) default-frame-alist))
@@ -67,7 +64,8 @@
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
 
-(setq org-log-done 'time)
+(setq org-log-done 'time
+      browse-url-browser-function 'eww-browse-url)
 
 (global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
 (global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
@@ -192,7 +190,7 @@
 
 (package-initialize)
 
-;; (mapcar 'package-install '(emms magit w3m))
+;; (mapcar 'package-install '(emms magit))
 
 (require 'emms-setup)
 
@@ -200,10 +198,8 @@
 (emms-default-players)
 
 (require 'magit)
-
+(magit-auto-revert-mode -1)
 (setq magit-last-seen-setup-instructions "1.4.0")
-
-(require 'w3m)
 
 (require 'mu4e)
 (when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
