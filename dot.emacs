@@ -65,6 +65,7 @@
 (blink-cursor-mode -1)
 
 (setq org-log-done 'time
+      default-input-method "swedish-postfix" ;C-\
       browse-url-browser-function 'eww-browse-url)
 
 (global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
