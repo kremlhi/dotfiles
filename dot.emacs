@@ -66,7 +66,8 @@
 
 (setq org-log-done 'time
       default-input-method "swedish-postfix" ;C-\
-      browse-url-browser-function 'eww-browse-url)
+      browse-url-browser-function 'eww-browse-url
+      ring-bell-function 'ignore)
 
 (global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
 (global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
