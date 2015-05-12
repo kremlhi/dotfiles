@@ -57,8 +57,8 @@
 (global-font-lock-mode -1)
 
 ;; SHUT UP!
-(setq inhibit-default-init 1
-      inhibit-startup-screen 1
+(setq inhibit-default-init t
+      inhibit-startup-screen t
       initial-scratch-message "")
 
 (setq-default cursor-type 'bar)
