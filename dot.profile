@@ -18,12 +18,14 @@ awk 'BEGIN{OFS=FS=":"}; {for(i=1;i<=NF;i++)if(d[$i]++)$i=""; print}' | \
 sed -e 's/::*/:/g' -e 's/:$//')
 export PATH
 
+vlc(){ "$(command -v VLC || command -v vlc || echo nocmd)" "$@"; }
+
 DOCKER_HOST=tcp://192.168.59.103:2376
 DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
 DOCKER_TLS_VERIFY=1
 export DOCKER_HOST DOCKER_CERT_PATH DOCKER_TLS_VERIFY
 
-MANPATH=$BREW/lib/erlang/man:$MAN_PATH; export MANPATH
+MANPATH=$BREW/lib/erlang/man:/usr/share/man:$MAN_PATH; export MANPATH
 
 ALTERNATIVE_EDITOR=ed; export ALTERNATIVE_EDITOR
 EDITOR=emacsclient; export EDITOR
