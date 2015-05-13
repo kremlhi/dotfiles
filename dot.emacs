@@ -77,6 +77,7 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c o") 'org-open-at-point-global)
+;;(global-set-key (kbd "C-h") 'delete-backward-char) ;deal with it B-)
 (global-set-key (kbd "M-g b") 'magit-blame-mode)
 (global-set-key (kbd "M-g o") 'magit-show)
 (global-set-key (kbd "M-g s") 'magit-status)
@@ -148,6 +149,9 @@
 
 
 ;;;; propaganda
+
+;; EMACS get slow and dorky with too big buffers
+(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
 (add-hook 'rcirc-mode-hook '(lambda () (rcirc-omit-mode))) ;默认打开忽略模式
 

@@ -22,8 +22,9 @@ DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
 DOCKER_TLS_VERIFY=1
 export DOCKER_HOST DOCKER_CERT_PATH DOCKER_TLS_VERIFY
 
-MANPATH=$HOMESW/man:$BREW/lib/erlang/man:$BREW/share/man:/usr/local/man:\
-/usr/share/man:$MANPATH; export MANPATH
+MANPATH=$HOMESW/man:$BREW/lib/erlang/man:$BREW/share/man:/usr/X11R6/man:\
+/usr/local/man:/usr/local/share/man:/opt/man:/usr/share/man:/usr/man:$MANPATH
+export MANPATH
 
 ALTERNATIVE_EDITOR=ed; export ALTERNATIVE_EDITOR
 EDITOR=emacsclient; export EDITOR
