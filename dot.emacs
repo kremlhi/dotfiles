@@ -3,7 +3,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; put your private parts in ~/.emacs.d/lisp/priv-${USER}.el
-(let ((lib (concat "priv-" (getenv "USER"))))
+(let ((lib (concat "priv-" user-login-name)))
   (when (locate-library lib)
     (load lib)))
 
@@ -63,6 +63,9 @@
 
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
+
+;; git does not approve trailing spaces :p
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq org-log-done 'time
       default-input-method "swedish-postfix" ;C-\
