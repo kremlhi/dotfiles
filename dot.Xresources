@@ -10,4 +10,5 @@ emacs.geometry: 80x47
 emacs.region.attributeBackground: #4d4d4d
 
 *font: -*-terminus-bold-*-*-*-14-*-*-*-*-*-*-*
+!*font: 7x14
 *reverseVideo: true
