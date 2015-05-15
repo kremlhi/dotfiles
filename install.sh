@@ -1,9 +1,15 @@
 #!/bin/sh
+# usage: install.sh [-n]
 
 set -eu
 
 umask 077
 wd=$(dirname "$0")
+ln=ln
+# dry run
+if [ $# -eq 1 ] && [ "x$1" = 'x-n' ]; then
+	ln='echo ln'
+fi
 
 cd "$wd"
 dotfiles=${PWD#$HOME/}
