@@ -164,7 +164,8 @@
       rcirc-scroll-show-maximum-output nil
       ;;设置忽略的响应类型
       rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-      rcirc-log-flag t)
+      rcirc-log-flag t
+      rcirc-decode-coding-system 'undecided) ;until 2038 when vol knows better
 
 (require 'epg-config)
 
