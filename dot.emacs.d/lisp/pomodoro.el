@@ -127,7 +127,7 @@ Formatted with `format-seconds'."
 (defun pomodoro-tick ()
   (let ((time
          (round (float-time
-                 time-subtract pomodoro-end-time (current-time)))))
+                 (time-subtract pomodoro-end-time (current-time))))))
     (if (<= time 0)
         (if (string= pomodoro-current-cycle pomodoro-work-cycle)
             (progn
