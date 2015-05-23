@@ -35,45 +35,38 @@
 
 (when (eq system-type 'darwin)
   (menu-bar-mode 1)
-  (add-to-list 'default-frame-alist '(background-color . "black"))
-  (add-to-list 'default-frame-alist '(foreground-color . "#eeeeee"))
-  (add-to-list 'default-frame-alist '(font . "Menlo 13"))
-  (add-to-list 'default-frame-alist '(height . 47))
-  (set-face-attribute 'region nil :background "#4d4d4d")
-  (setq mac-option-key-is-meta nil
-        mac-command-key-is-meta t
-        mac-command-modifier 'meta
-        mac-option-modifier nil))
-
-(setq backup-by-copying t
-      backup-directory-alist '(("." . "~/.emacs.d/trash"))
-      delete-old-versions t
-      kept-new-versions 6
-      version-control t)
+  (mapcar (lambda (x) (add-to-list 'default-frame-alist x))
+          '((background-color . "black")
+            (foreground-color . "#eeeeee")
+            (font . "Menlo 13")
+            (height . 47)))
+  (set-face-attribute 'region nil :background "#4d4d4d"))
 
 ;; disable colour crap
 (unless (assoc 'tty-color-mode default-frame-alist)
     (push (cons 'tty-color-mode 'never) default-frame-alist))
 (global-font-lock-mode -1)
 
-;; SHUT UP!
-(setq inhibit-default-init t
+(setq inhibit-default-init t ;SHUT UP!
       inhibit-startup-screen t
-      initial-scratch-message "")
+      initial-scratch-message ""
+      org-log-done 'time
+      default-input-method "swedish-postfix" ;C-\
+      browse-url-browser-function 'eww-browse-url
+      ring-bell-function 'ignore
+      backup-directory-alist '(("." . "~/.emacs.d/trash")) ;do not litter *~
+      backup-by-copying t
+      delete-old-versions t
+      kept-new-versions 6
+      version-control t)
 
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
 
-;; git does not approve trailing spaces :p
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'delete-trailing-whitespace) ;to please git
+;; EMACS get slow and dorky with too big buffers
+(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
-(setq org-log-done 'time
-      default-input-method "swedish-postfix" ;C-\
-      browse-url-browser-function 'eww-browse-url
-      ring-bell-function 'ignore)
-
-(global-set-key (kbd "C-c +") 'emms-volume-mode-plus)
-(global-set-key (kbd "C-c -") 'emms-volume-mode-minus)
 (global-set-key (kbd "C-c L") 'org-insert-link-global)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
@@ -111,39 +104,34 @@
       (setq erlang-root-dir dir)
       (require 'erlang-start)
       (cond-load-distel (concat (getenv "HOMESW") "/share/distel/elisp")))))
+(set-erlang-dir (erl-root))
 
 (defun my-erlang-mode-hook ()
   (setq inferior-erlang-machine-options '("-sname" "emacs")))
-
 (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
 
-(set-erlang-dir (erl-root))
-
-(c-add-style "openbsd"
-             '("bsd"
-               (indent-tabs-mode . t)
-               (defun-block-intro . 8)
-               (statement-block-intro . 8)
-               (statement-case-intro . 8)
-               (substatement-open . 4)
-               (substatement . 8)
-               (arglist-cont-nonempty . 4)
-               (inclass . 8)
-               (knr-argdecl-intro . 8)))
+(c-add-style "openbsd" '("bsd"
+                         (indent-tabs-mode . t)
+                         (defun-block-intro . 8)
+                         (statement-block-intro . 8)
+                         (statement-case-intro . 8)
+                         (substatement-open . 4)
+                         (substatement . 8)
+                         (arglist-cont-nonempty . 4)
+                         (inclass . 8)
+                         (knr-argdecl-intro . 8)))
 (setq c-default-style "openbsd")
 
 (defun my-python-mode-hook ()
   (setq indent-tabs-mode t
         tab-width 4
         python-indent 4))
-
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
 (defun my-sh-mode-hook ()
   (setq sh-indentation 4
         sh-basic-offset 4
         indent-tabs-mode nil))
-
 (add-hook 'sh-mode-hook 'my-sh-mode-hook)
 
 ;; cperl-mode is preferred to perl-mode
@@ -153,22 +141,15 @@
 
 ;;;; propaganda
 
-;; EMACS get slow and dorky with too big buffers
-(add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
-
-(add-hook 'rcirc-mode-hook '(lambda () (rcirc-omit-mode))) ;默认打开忽略模式
-
-(rcirc-track-minor-mode 1)
-
 (setq rcirc-buffer-maximum-lines 1024
       rcirc-scroll-show-maximum-output nil
-      ;;设置忽略的响应类型
       rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
       rcirc-log-flag t
       rcirc-decode-coding-system 'undecided) ;until 2038 when vol knows better
+(add-hook 'rcirc-mode-hook 'rcirc-omit-mode) ;默认打开忽略模式
+(rcirc-track-minor-mode 1)
 
 (require 'epg-config)
-
 (setq mml2015-use 'epg
       mml2015-verbose t
       mml2015-encrypt-to-self t
@@ -176,34 +157,19 @@
       mml2015-passphrase-cache-expiry '36000
       epg-debug t)
 
-(require 'pomodoro)
-
-(setq sounds '("/System/Library/Sounds/Glass.aiff"
-               "/usr/share/sounds/ubuntu/stereo/phone-outgoing-busy.ogg"))
-
-(setq sound (car (remove-if-not 'file-readable-p sounds)))
-
-(unless (executable-find pomodoro-sound-player)
-  (setq pomodoro-sound-player "afplay"))
-
-(setq pomodoro-break-start-sound sound
-      pomodoro-work-start-sound sound
-      pomodoro-time-format "%m"
+(require 'pomodoro) ;located in ~/.emacs.d/lisp/
+(setq pomodoro-time-format "%m"
       pomodoro-show-number t)
-
 (pomodoro-add-to-mode-line)
 
 (require 'package)
-
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-
 (package-initialize)
 
 ;; (mapcar 'package-install '(emms magit))
 
 (require 'emms-setup)
-
 (emms-all)
 (emms-default-players)
 
@@ -212,12 +178,10 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 (require 'mu4e)
+(require 'org-mu4e)
 (when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text))
-
-(require 'org-mu4e)
-
 (setq shr-inhibit-decoration t
       mu4e-view-prefer-html t ;people...
       mu4e-get-mail-command "offlineimap"
@@ -229,9 +193,7 @@
       mu4e-org-contacts-file  "~/org/contacts.org"
       smtpmail-stream-type 'ssl
       send-mail-function 'smtpmail-send-it)
-
 (add-to-list 'mu4e-headers-actions
              '("org-contact-add" ?o mu4e-action-add-org-contact) t)
-
 (add-to-list 'mu4e-view-actions
              '("org-contact-add" ?o mu4e-action-add-org-contact) t)
