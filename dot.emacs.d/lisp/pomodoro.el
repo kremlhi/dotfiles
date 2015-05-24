@@ -196,7 +196,8 @@ Formatted with `format-seconds'."
 
 (defun play-pomodoro-sound (sound)
   "Play sound for pomodoro"
-  (call-process pomodoro-sound-player nil 0 nil (expand-file-name sound)))
+  (unless (equal sound "")
+    (call-process pomodoro-sound-player nil 0 nil (expand-file-name sound))))
 
 (defun play-pomodoro-break-sound ()
   "Play sound for break"
