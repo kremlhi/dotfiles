@@ -1,3 +1,14 @@
+Host netbsd64
+	HostName 192.168.59.133
+
+Host solaris
+	HostName 192.168.59.132
+
+Host ubuntu64
+	HostName 192.168.59.131
+
+Host openbsd64
+	HostName 192.168.59.128
+
 Host *
-	User emil
 	GSSAPIAuthentication yes

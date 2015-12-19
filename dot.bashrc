@@ -12,6 +12,8 @@ if [ -z "$BASHRC" -a -f "$HOME/.profile" ]; then
     . "$HOME/.profile"
 fi
 
+HISTTIMEFORMAT='%F %T '
+
 case "$TERM" in
     xterm*|rxvt*)
         if command -v awd >/dev/null 2>&1; then

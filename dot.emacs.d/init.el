@@ -13,7 +13,7 @@
 ;; from #emacs on freenode
 (defun better-defaults ()
   ;; (iswitchb-mode 1) ;deprecated, rip :(
-  (ido-mode 1) ;sucks
+  (ido-mode 'buffer) ;sucks
   ;; (icomplete-mode 1) ;sucks even more
   (setq ido-enable-flex-matching t)
   (when (fboundp 'tool-bar-mode)
@@ -33,14 +33,16 @@
         apropos-do-all t))
 (better-defaults)
 
+(defun add-list-to-list (name lst)
+  (mapcar (lambda (x) (add-to-list name x)) lst))
+
 (when (eq system-type 'darwin)
   (menu-bar-mode 1)
-  (mapcar (lambda (x) (add-to-list 'default-frame-alist x))
-          '((background-color . "black")
-            (foreground-color . "#eeeeee")
-            (font . "Menlo 13")
-            (height . 47)))
-  (set-face-attribute 'region nil :background "#4d4d4d"))
+  (add-list-to-list
+   'default-frame-alist
+   '((font . "Menlo 13")
+     (background-color . "black") (foreground-color . "white")
+     (height . 60))))
 
 ;; disable colour crap
 (unless (assoc 'tty-color-mode default-frame-alist)
@@ -51,6 +53,7 @@
       inhibit-startup-screen t
       initial-scratch-message ""
       org-log-done 'time
+      ido-default-buffer-method 'selected-window
       default-input-method "swedish-postfix" ;C-\
       browse-url-browser-function 'eww-browse-url
       ring-bell-function 'ignore
@@ -58,12 +61,14 @@
       backup-by-copying t
       delete-old-versions t
       kept-new-versions 6
-      version-control t)
+      version-control t
+      shr-inhibit-decoration t) ;makes my eyes bleed...... ,(
 
 (setq-default cursor-type 'bar)
 (blink-cursor-mode -1)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace) ;to please git
+;;(add-hook 'before-save-hook 'delete-trailing-whitespace) ;to please git
+
 ;; EMACS get slow and dorky with too big buffers
 (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
@@ -77,7 +82,7 @@
 (global-set-key (kbd "M-g b") 'magit-blame-mode)
 (global-set-key (kbd "M-g o") 'magit-show)
 (global-set-key (kbd "M-g s") 'magit-status)
-
+(global-set-key (kbd "s-\"") 'previous-multiframe-window)
 
 ;;;; lang
 
@@ -103,7 +108,8 @@
       (add-to-list 'exec-path bin-dir)
       (setq erlang-root-dir dir)
       (require 'erlang-start)
-      (cond-load-distel (concat (getenv "HOMESW") "/share/distel/elisp")))))
+      (cond-load-distel (concat (getenv "HOMESW") "/share/distel/elisp"))
+      )))
 (set-erlang-dir (erl-root))
 
 (defun my-erlang-mode-hook ()
@@ -111,15 +117,16 @@
 (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
 
 (c-add-style "openbsd" '("bsd"
-                         (indent-tabs-mode . t)
-                         (defun-block-intro . 8)
-                         (statement-block-intro . 8)
-                         (statement-case-intro . 8)
+                         (c-basic-offset . 4)
+                         (indent-tabs-mode . nil)
+                         (defun-block-intro . 4)
+                         (statement-block-intro . 4)
+                         (statement-case-intro . 4)
                          (substatement-open . 4)
-                         (substatement . 8)
+                         (substatement . 4)
                          (arglist-cont-nonempty . 4)
-                         (inclass . 8)
-                         (knr-argdecl-intro . 8)))
+                         (inclass . 4)
+                         (knr-argdecl-intro . 4)))
 (setq c-default-style "openbsd")
 
 (defun my-python-mode-hook ()
@@ -176,24 +183,30 @@
 (require 'magit)
 (magit-auto-revert-mode -1)
 (setq magit-last-seen-setup-instructions "1.4.0")
+;; 
+;; (add-list-to-list
+;;  'load-path
+;;  (list (concat (getenv "tailf") "/devel_support/lib/emacs")
+;;        (concat (getenv "tailf") "/devel_support/lib/emacs/tailfsnippets/yasnippet")))
+;; 
+;; (when (locate-library "tail-f")
+;;   (load "tail-f")
+;;   (require 'yasnippet)
+;;   (yas-global-mode 1))
+;; 
+;; (require 'yang-mode nil t)
+;; 
+;; (defun my-yang-mode-hook ()
+;;   (setq indent-tabs-mode nil)
+;;   (setq c-basic-offset 2))
+;; 
+;; (defalias 'xml-mode 'sgml-xml-mode)
+;; (flyspell-mode -1)
+;; 
+;; (add-hook 'yang-mode-hook 'my-yang-mode-hook)
+;; 
 
-(require 'mu4e)
-(require 'org-mu4e)
-(when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text))
-(setq shr-inhibit-decoration t
-      mu4e-view-prefer-html t ;people...
-      mu4e-get-mail-command "offlineimap"
-      mu4e-update-interval (* 5 60)
-      mu4e-headers-date-format "%F %T"
-      mail-user-agent 'mu4e-user-agent
-      mu4e-compose-signature ""
-      message-signature nil
-      mu4e-org-contacts-file  "~/org/contacts.org"
-      smtpmail-stream-type 'ssl
-      send-mail-function 'smtpmail-send-it)
-(add-to-list 'mu4e-headers-actions
-             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
-(add-to-list 'mu4e-view-actions
-             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+(add-list-to-list 'package-archives
+                  '(("gnu" . "http://elpa.gnu.org/packages/")
+                    ("marmalade" . "https://marmalade-repo.org/packages/")
+                    ("melpa" . "http://melpa.org/packages/")))

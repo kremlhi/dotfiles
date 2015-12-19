@@ -1,29 +1,32 @@
 # -*- mode: sh -*-
 
+uniqpath(){
+    printf %s "$1" | awk 'BEGIN{RS=ORS=":"}; {if(!d[$0]++)print}' | sed 's/:$//'
+}
+
 SYS=$(uname -s | tr '[:upper:]' '[:lower:]'); export SYS
+SYSREL=$(uname -r); export SYSREL
 ARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/x86_64/amd64/'); export ARCH
 HOMESW=$HOME/sw/$SYS-$ARCH; export HOMESW
 
-BREW=/brew; [ -d "$BREW" ] || BREW=/usr/local; export BREW
+BREW=/opt/brew; [ -d "$BREW" ] || BREW=/usr/local; export BREW
 CABALBIN=$(sed -n 's/^extra-prog-path: //p' ~/.cabal/config 2>/dev/null)
 GOROOT=/usr/local/go; export GOROOT
-PLAN9=/p9p; export PLAN9
+PLAN9=/opt/p9p; export PLAN9
 
-PATH=$HOME/bin:$HOMESW/bin:$BREW/bin:$CABALBIN:\
-$GOROOT/bin:/usr/local/bin:$PATH:$PLAN9/bin
-
-PATH=$(echo "$PATH" | \
-awk 'BEGIN{OFS=FS=":"}; {for(i=1;i<=NF;i++)if(d[$i]++)$i=""; print}' | \
-sed -e 's/::*/:/g' -e 's/:$//')
+PATH=$(uniqpath "$HOME/bin:$HOMESW/bin:$BREW/bin:$CABALBIN:/opt/local/bin:$GOROOT/bin:/usr/local/bin:$HOME/repos/tailf-doc/bin:$PATH:$PLAN9/bin")
 export PATH
+
+[ ! -d "$BREW/opt/openssl" ] || USE_SSL_DIR=$BREW/opt/openssl export USE_SSL_DIR
+tailf=$HOME/repos/tailf; export tailf
+[ ! -e "$tailf/env.sh" ] || . "$tailf/env.sh"
 
 DOCKER_HOST=tcp://192.168.59.103:2376
 DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
 DOCKER_TLS_VERIFY=1
 export DOCKER_HOST DOCKER_CERT_PATH DOCKER_TLS_VERIFY
 
-MANPATH=$HOMESW/man:$BREW/lib/erlang/man:$BREW/share/man:/usr/X11R6/man:\
-/usr/local/man:/usr/local/share/man:/opt/man:/usr/share/man:/usr/man:$MANPATH
+MANPATH=$(uniqpath "$HOMESW/man:$BREW/lib/erlang/man:$BREW/share/man:/usr/X11R6/man:/usr/local/man:/usr/local/share/man:/opt/man:/usr/share/man:/usr/man:/Library/Developer/CommandLineTools/usr/share/man:$MANPATH")
 export MANPATH
 
 ALTERNATIVE_EDITOR=ed; export ALTERNATIVE_EDITOR
@@ -38,6 +41,10 @@ LESS=-FemXLs
 export PAGER LESS
 
 PS1='\h\$ '; export PS1
+
+LANG=${LANG:-en_US.UTF-8}
+LC_CTYPE=${LC_CTYPE:-"$LANG"}
+export LANG LC_CTYPE
 
 alias ls='ls -F'
 alias e=$EDITOR
