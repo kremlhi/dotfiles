@@ -72,12 +72,6 @@
 ;; EMACS get slow and dorky with too big buffers
 (add-hook 'comint-output-filter-functions 'comint-truncate-buffer)
 
-(global-set-key (kbd "C-c L") 'org-insert-link-global)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c o") 'org-open-at-point-global)
 ;;(global-set-key (kbd "C-h") 'delete-backward-char) ;deal with it B-)
 (global-set-key (kbd "M-g b") 'magit-blame-mode)
 (global-set-key (kbd "M-g o") 'magit-show)
@@ -99,6 +93,10 @@
     (require 'distel)
     (distel-setup)))
 
+;; (add-hook 'after-init-hook 'my-after-init-hook)
+;; (defun my-after-init-hook ()
+;;   (require 'edts-start))
+
 (defun set-erlang-dir (dir)
   (let ((bin-dir (expand-file-name "bin" dir))
         (tools-dirs (file-expand-wildcards
@@ -116,7 +114,7 @@
   (setq inferior-erlang-machine-options '("-sname" "emacs")))
 (add-hook 'erlang-mode-hook 'my-erlang-mode-hook)
 
-(c-add-style "openbsd" '("bsd"
+(c-add-style "acme" '("bsd"
                          (c-basic-offset . 4)
                          (indent-tabs-mode . nil)
                          (defun-block-intro . 4)
@@ -127,7 +125,7 @@
                          (arglist-cont-nonempty . 4)
                          (inclass . 4)
                          (knr-argdecl-intro . 4)))
-(setq c-default-style "openbsd")
+(setq c-default-style "acme")
 
 (defun my-python-mode-hook ()
   (setq indent-tabs-mode t
@@ -210,3 +208,36 @@
                   '(("gnu" . "http://elpa.gnu.org/packages/")
                     ("marmalade" . "https://marmalade-repo.org/packages/")
                     ("melpa" . "http://melpa.org/packages/")))
+
+(require 'mu4e)
+(require 'org-mu4e)
+(when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
+  (require 'mu4e-contrib)
+  (setq mu4e-html2text-command 'mu4e-shr2text))
+(setq mu4e-view-prefer-html t ;people...
+      mu4e-get-mail-command "offlineimap"
+      mu4e-update-interval (* 5 60)
+      mu4e-headers-date-format "%F %T"
+      mail-user-agent 'mu4e-user-agent
+      mu4e-compose-signature ""
+      message-signature nil
+      mu4e-org-contacts-file  "~/org/contacts.org"
+      smtpmail-stream-type 'ssl
+      send-mail-function 'smtpmail-send-it)
+(add-to-list 'mu4e-headers-actions
+             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+(add-to-list 'mu4e-view-actions
+             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values (quote ((allout-layout . t)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

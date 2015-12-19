@@ -1,6 +1,5 @@
 %% -*- mode: erlang -*-
 
-
 Tf = string:tokens(
 "./lib/build_tools/ebin
 ./lib/capi/ebin
@@ -161,3 +160,6 @@ case string:tokens(atom_to_list(node()), "@") of
     _ ->
         ok
 end.
+
+code:load_abs(os:getenv("HOME")++"/.erlang.d/user_default").
+
