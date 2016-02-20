@@ -9,12 +9,18 @@ SYSREL=$(uname -r); export SYSREL
 ARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/x86_64/amd64/'); export ARCH
 HOMESW=$HOME/sw/$SYS-$ARCH; export HOMESW
 
+INFERNO=/opt/inferno; export INFERNO
+SYSHOST=$(uname -s|sed 's/Darwin/MacOSX/'); export SYSHOST
+OBJTYPE=$(uname -m|sed 's/.*86.*/386/'); export OBJTYPE
+ACIDLIB=$INFERNO/lib/acid; export ACIDLIB
+EMU="-r$INFERNO -g1100x700"; export EMU
+
 BREW=/opt/brew; [ -d "$BREW" ] || BREW=/usr/local; export BREW
 CABALBIN=$(sed -n 's/^extra-prog-path: //p' ~/.cabal/config 2>/dev/null)
-GOROOT=/usr/local/go; export GOROOT
+GOPATH=$HOME/src/go; export GOPATH
 PLAN9=/opt/p9p; export PLAN9
 
-PATH=$(uniqpath "$HOME/bin:$HOMESW/bin:$BREW/bin:$CABALBIN:/opt/local/bin:$GOROOT/bin:/usr/local/bin:$HOME/repos/tailf-doc/bin:$PATH:$PLAN9/bin")
+PATH=$(uniqpath "$HOME/bin:$HOMESW/bin:$BREW/bin:$CABALBIN:/opt/local/bin:/usr/local/bin:$HOME/repos/tailf-doc/bin:$PATH:$PLAN9/bin:$GOPATH/bin:$INFERNO/$SYSHOST/$OBJTYPE/bin")
 export PATH
 
 [ ! -d "$BREW/opt/openssl" ] || USE_SSL_DIR=$BREW/opt/openssl export USE_SSL_DIR
