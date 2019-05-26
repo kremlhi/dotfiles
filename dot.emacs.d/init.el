@@ -181,28 +181,28 @@
 (require 'magit)
 (magit-auto-revert-mode -1)
 (setq magit-last-seen-setup-instructions "1.4.0")
-;; 
+;;
 ;; (add-list-to-list
 ;;  'load-path
 ;;  (list (concat (getenv "tailf") "/devel_support/lib/emacs")
 ;;        (concat (getenv "tailf") "/devel_support/lib/emacs/tailfsnippets/yasnippet")))
-;; 
+;;
 ;; (when (locate-library "tail-f")
 ;;   (load "tail-f")
 ;;   (require 'yasnippet)
 ;;   (yas-global-mode 1))
-;; 
+;;
 ;; (require 'yang-mode nil t)
-;; 
+;;
 ;; (defun my-yang-mode-hook ()
 ;;   (setq indent-tabs-mode nil)
 ;;   (setq c-basic-offset 2))
-;; 
+;;
 ;; (defalias 'xml-mode 'sgml-xml-mode)
 ;; (flyspell-mode -1)
-;; 
+;;
 ;; (add-hook 'yang-mode-hook 'my-yang-mode-hook)
-;; 
+;;
 
 (add-list-to-list 'package-archives
                   '(("gnu" . "http://elpa.gnu.org/packages/")
