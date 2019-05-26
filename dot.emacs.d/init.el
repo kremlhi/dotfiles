@@ -200,8 +200,8 @@
 (package-initialize)
 ;; (mapcar 'package-install '(emms magit))
 
-(require 'org-jira)
-(setq jiralib-url "https://jira-eng-gpk3.cisco.com/jira")
+;; (require 'org-jira)
+;; (setq jiralib-url "https://jira-eng-gpk3.cisco.com/jira")
 
 (require 'emms-setup)
 (emms-all)
@@ -311,25 +311,26 @@ save it in `ffap-file-at-point-line-number' variable."
   (require 'yasnippet)
   (yas-global-mode 1))
 
-(require 'mu4e)
-(require 'org-mu4e)
-(when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text))
-(setq mu4e-view-prefer-html t ;people...
-      mu4e-get-mail-command "offlineimap"
-      mu4e-update-interval (* 5 60)
-      mu4e-headers-date-format "%F %T"
-      mail-user-agent 'mu4e-user-agent
-      mu4e-compose-signature ""
-      message-signature nil
-      mu4e-org-contacts-file  "~/org/contacts.org"
-      smtpmail-stream-type 'ssl
-      send-mail-function 'smtpmail-send-it)
-(add-to-list 'mu4e-headers-actions
-             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
-(add-to-list 'mu4e-view-actions
-             '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+;; (require 'mu4e)
+;; (require 'org-mu4e)
+;; (when (locate-library "mu4e-contrib") ;no contrib in mu4e 0.9.9.5
+;;   (require 'mu4e-contrib)
+;;   (setq mu4e-html2text-command 'mu4e-shr2text))
+;; (setq mu4e-view-prefer-html t ;people...
+;;       mu4e-get-mail-command "offlineimap"
+;;       mu4e-update-interval (* 5 60)
+;;       mu4e-headers-date-format "%F %T"
+;;       mail-user-agent 'mu4e-user-agent
+;;       mu4e-compose-signature ""
+;;       message-signature nil
+;;       mu4e-org-contacts-file  "~/org/contacts.org"
+;;       smtpmail-stream-type 'ssl
+;;       send-mail-function 'smtpmail-send-it)
+;; (add-to-list 'mu4e-headers-actions
+;;              '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+;; (add-to-list 'mu4e-view-actions
+;;              '("org-contact-add" ?o mu4e-action-add-org-contact) t)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
