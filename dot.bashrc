@@ -8,16 +8,14 @@ case $- in
 esac
 
 if [ -z "$BASHRC" -a -f "$HOME/.profile" ]; then
-    BASHRC=1; export BASHRC
+    BASHRC=1
     . "$HOME/.profile"
 fi
-
-HISTTIMEFORMAT='%F %T '
 
 case "$TERM" in
     xterm*|rxvt*)
         if command -v awd >/dev/null 2>&1; then
-            PROMPT_COMMAND=awd
+            PROMPT_COMMAND='9 awd'
         fi
         ;;
     *) ;;

@@ -1,164 +1,18 @@
 %% -*- mode: erlang -*-
 
-Tf = string:tokens(
-"./lib/build_tools/ebin
-./lib/capi/ebin
-./lib/cdb/ebin
-./lib/cli/ebin
-./lib/confd/ebin
-./lib/confdc/ebin
-./lib/econfd/ebin
-./lib/econfd/examples/procs
-./lib/econfd/examples/simple_notrans
-./lib/econfd/examples/test/ebin
-./lib/msc/ebin
-./lib/ncm/ebin
-./lib/ncs/ebin
-./lib/netconf/ebin
-./lib/pam/ebin
-./lib/proper/ebin
-./lib/rest/ebin
-./lib/snmp/ebin
-./lib/snmp/examples/ex1
-./lib/snmp/examples/ex2
-./lib/snmpa/ebin
-./lib/snmpgw/ebin
-./lib/snmpm/ebin
-./lib/ssh/ebin
-./lib/tailflow/applications/service-chain/devices/fw/ebin
-./lib/tailflow/applications/service-chain/devices/shaper/ebin
-./lib/tts/ebin
-./lib/util/ebin
-./lib/webui/ebin
-./lib/xds/ebin
-./lib/xpath/ebin
-./lib/yanger/ebin
-./lib/yanger/priv
-./lib/yaws/ebin
-./otp/bootstrap/lib/asn1/ebin
-./otp/bootstrap/lib/compiler/ebin
-./otp/bootstrap/lib/hipe/ebin
-./otp/bootstrap/lib/ic/ebin
-./otp/bootstrap/lib/kernel/ebin
-./otp/bootstrap/lib/parsetools/ebin
-./otp/bootstrap/lib/sasl/ebin
-./otp/bootstrap/lib/snmp/ebin
-./otp/bootstrap/lib/stdlib/ebin
-./otp/bootstrap/lib/syntax_tools/ebin
-./otp/bootstrap/lib/wx/ebin
-./otp/erts/preloaded/ebin
-./otp/installed/lib/erlang/lib/appmon-2.1.14.2/ebin
-./otp/installed/lib/erlang/lib/asn1-2.0.4/ebin
-./otp/installed/lib/erlang/lib/common_test-1.7.4/ebin
-./otp/installed/lib/erlang/lib/compiler-4.9.4/ebin
-./otp/installed/lib/erlang/lib/crypto-3.2/ebin
-./otp/installed/lib/erlang/lib/debugger-3.2.12/ebin
-./otp/installed/lib/erlang/lib/dialyzer-2.6.1/ebin
-./otp/installed/lib/erlang/lib/edoc-0.7.12.1/ebin
-./otp/installed/lib/erlang/lib/erl_docgen-0.3.4.1/ebin
-./otp/installed/lib/erlang/lib/erts-5.10.4/ebin
-./otp/installed/lib/erlang/lib/eunit-2.2.6/ebin
-./otp/installed/lib/erlang/lib/gs-1.5.15.2/contribs/ebin
-./otp/installed/lib/erlang/lib/gs-1.5.15.2/ebin
-./otp/installed/lib/erlang/lib/gs-1.5.15.2/examples/ebin
-./otp/installed/lib/erlang/lib/hipe-3.10.2.2/ebin
-./otp/installed/lib/erlang/lib/ic-4.3.4/ebin
-./otp/installed/lib/erlang/lib/inets-5.9.8/ebin
-./otp/installed/lib/erlang/lib/inets-5.9.8/examples/httpd_load_test
-./otp/installed/lib/erlang/lib/kernel-2.16.4/ebin
-./otp/installed/lib/erlang/lib/mnesia-4.11/ebin
-./otp/installed/lib/erlang/lib/observer-1.3.1.2/ebin
-./otp/installed/lib/erlang/lib/os_mon-2.2.14/ebin
-./otp/installed/lib/erlang/lib/otp_mibs-1.0.8/ebin
-./otp/installed/lib/erlang/lib/parsetools-2.0.10/ebin
-./otp/installed/lib/erlang/lib/percept-0.8.8.2/ebin
-./otp/installed/lib/erlang/lib/pman-2.7.1.4/ebin
-./otp/installed/lib/erlang/lib/public_key-0.21/ebin
-./otp/installed/lib/erlang/lib/reltool-0.6.4.2/ebin
-./otp/installed/lib/erlang/lib/runtime_tools-1.8.13/ebin
-./otp/installed/lib/erlang/lib/sasl-2.3.4/ebin
-./otp/installed/lib/erlang/lib/sasl-2.3.4/examples/ebin
-./otp/installed/lib/erlang/lib/snmp-4.25/ebin
-./otp/installed/lib/erlang/lib/snmp-4.25/examples/ex1
-./otp/installed/lib/erlang/lib/snmp-4.25/examples/ex2
-./otp/installed/lib/erlang/lib/ssl-5.3.3/ebin
-./otp/installed/lib/erlang/lib/ssl-5.3.3/examples/ebin
-./otp/installed/lib/erlang/lib/stdlib-1.19.4/ebin
-./otp/installed/lib/erlang/lib/syntax_tools-1.6.13/ebin
-./otp/installed/lib/erlang/lib/test_server-3.6.4/ebin
-./otp/installed/lib/erlang/lib/tools-2.6.13/ebin
-./otp/installed/lib/erlang/lib/typer-0.9.5/ebin
-./otp/installed/lib/erlang/lib/wx-1.3/ebin
-./otp/installed/lib/erlang/lib/wx-1.3/examples/demo
-./otp/installed/lib/erlang/lib/wx-1.3/examples/simple
-./otp/installed/lib/erlang/lib/wx-1.3/examples/sudoku
-./otp/installed/lib/erlang/lib/wx-1.3/examples/xrc
-./otp/installed/lib/erlang/lib/xmerl-1.3.6/ebin
-./otp/lib/appmon/ebin
-./otp/lib/asn1/ebin
-./otp/lib/asn1/src
-./otp/lib/common_test/ebin
-./otp/lib/compiler/ebin
-./otp/lib/compiler/test/beam_validator_SUITE_data
-./otp/lib/compiler/test/compile_SUITE_data
-./otp/lib/crypto/ebin
-./otp/lib/debugger/ebin
-./otp/lib/dialyzer/ebin
-./otp/lib/edoc/ebin
-./otp/lib/erl_docgen/ebin
-./otp/lib/eunit/ebin
-./otp/lib/gs/contribs/ebin
-./otp/lib/gs/ebin
-./otp/lib/hipe/ebin
-./otp/lib/ic/ebin
-./otp/lib/inets/ebin
-./otp/lib/inets/examples/httpd_load_test
-./otp/lib/kernel/ebin
-./otp/lib/kernel/test/code_SUITE_data/clash/foobar-0.1/ebin
-./otp/lib/kernel/test/code_SUITE_data/clash/zork-0.8/ebin
-./otp/lib/mnesia/ebin
-./otp/lib/observer/ebin
-./otp/lib/os_mon/ebin
-./otp/lib/otp_mibs/ebin
-./otp/lib/parsetools/ebin
-./otp/lib/percept/ebin
-./otp/lib/pman/ebin
-./otp/lib/public_key/ebin
-./otp/lib/reltool/ebin
-./otp/lib/runtime_tools/ebin
-./otp/lib/sasl/ebin
-./otp/lib/sasl/examples/ebin
-./otp/lib/snmp/ebin
-./otp/lib/snmp/examples/ex1
-./otp/lib/snmp/examples/ex2
-./otp/lib/ssl/ebin
-./otp/lib/ssl/examples/ebin
-./otp/lib/stdlib/ebin
-./otp/lib/syntax_tools/ebin
-./otp/lib/test_server/ebin
-./otp/lib/tools/ebin
-./otp/lib/tools/test/xref_SUITE_data
-./otp/lib/typer/ebin
-./otp/lib/wx/ebin
-./otp/lib/wx/examples/demo
-./otp/lib/wx/examples/simple
-./otp/lib/wx/examples/sudoku
-./otp/lib/wx/examples/xrc
-./otp/lib/xmerl/ebin
-./system/test/lib/katt/deps/lhttpc/ebin
-./system/test/lib/katt/deps/mochijson3/ebin
-./system/test/lib/katt/deps/neotoma/ebin
-./system/test/lib/katt/ebin
-./system/test/lib/lux/ebin
-./system/test/lib/meck/ebin", " \t\r\n").
+%code:load_abs(filename:join([os:getenv("HOME"),"erl","user_default"])),
+case os:getenv("HOMESW") of
+    false -> ok;
+    H -> T = ["share","distel","ebin"],
+         code:add_pathsz([filename:join([H,erlang:system_info(otp_release)|T]),
+                          filename:join([H|T])])
+end.
 
-case string:tokens(atom_to_list(node()), "@") of
-    ["emacs" | _] ->
-        code:load_abs(os:getenv("HOME")++"/erl/user_default"),
-        code:add_patha(os:getenv("HOMESW") ++ "/share/distel/ebin"),
-        [code:add_pathz(os:getenv("tailf") ++ "/" ++ X) || X <- Tf];
-    _ ->
-        ok
+case {os:getenv("W"),atom_to_list(node())} of
+    {false,_} -> ok;
+    {Tf,"emacs@"++_} -> P = [Tf,"lib","*","ebin"],
+                        code:add_pathsz(filelib:wildcard(filename:join(P)));
+          _ -> ok
 end.
 
 code:load_abs(os:getenv("HOME")++"/.erlang.d/user_default").
