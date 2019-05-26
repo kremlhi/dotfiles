@@ -1,3 +1,5 @@
+clone the repo to a subdirectory of your $HOME directory and run make:
+
 usage:
 
     $ git clone https://github.com/kremlhi/dotfiles.git
@@ -5,7 +7,7 @@ usage:
     $ make -n
     $ make
 
-Beware! Files in the repo may overwrite files in your home directory
+BEWARE! Files in this repo may overwrite files in your home directory
 if they exist.
 
 -n is dry-run, it will display what changes will be made.
